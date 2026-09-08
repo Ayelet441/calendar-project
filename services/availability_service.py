@@ -35,12 +35,12 @@ class AvailabilityService:
             participants: List[str],
             duration: timedelta
     ) -> List[TimeSlot]:
-        duration_minutes = int(duration.total_seconds() / 60)
-
+        # Early escape: validate inputs immediately before executing any heavy logic
         if not participants:
             logger.warning("Attempted to find slots with an empty participant list.")
             raise EmptyPersonListError("Participant list cannot be empty.")
 
+        duration_minutes = int(duration.total_seconds() / 60)
         if duration_minutes <= 0:
             logger.warning("Invalid meeting duration requested: %d minutes.", duration_minutes)
             raise InvalidDurationError("Meeting duration must be greater than zero.")
